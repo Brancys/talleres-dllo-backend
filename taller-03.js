@@ -6,10 +6,6 @@ function desglosarString(cadena,param) {
   return cad.length - cad.filter(esVocal).length
 }
 
-function esVocal(item) {
-  return ['a','e','i','o','u'].includes(item)  
-}
-
 function twoSum(array,n) {  //la funcion retorna solo el primer par de índices de numeros que sumados den n
   ans = []
   for (let i = 0; i < array.length; i++) {
@@ -33,4 +29,8 @@ function conversionRomana(numRomano) {
     }
   }
   return num;
+}
+
+function esVocal(item) {
+  return ['a','e','i','o','u'].includes(item)  
 }
