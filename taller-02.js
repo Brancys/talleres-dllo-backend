@@ -27,5 +27,14 @@ function missingNumbers(numeros = []) {
   numeros.sort(function (a, b) {
     return a - b
   });
-  return numeros.slice(1, -1)
+  min = numeros[0]
+  max = numeros.slice(-1)[0]
+  newArray = numeros.slice(1, -1)
+  result = []
+  for (let i = min + 1 ; i < max ; i++ ) {
+    if (!newArray.includes(i)) {
+      result.push(i)      
+    }
+  }
+  return result
 }
