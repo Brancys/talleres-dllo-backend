@@ -6,15 +6,13 @@ function desglosarString(cadena,param) {
   return cad.length - cad.filter(esVocal).length
 }
 
-function twoSum(array,n) {  //la funcion retorna solo el primer par de índices de numeros que sumados den n
-  ans = []
-  for (let i = 0; i < array.length; i++) {
-    for (let j = i + 1; j < array.length; j++) {     
-      if (array[i]+array[j] === n && array[i] != array[j]) {
-        return [i,j]        
+function twoSum(nums, target) {
+  return nums.map((num, i) => {
+      const complementIndex = nums.findIndex((n, j) => n === target - num && j !== i);
+      if (complementIndex !== -1) {
+          return [i, complementIndex];  
       }
-    }    
-  }  
+  }).find(result => result !== undefined); 
 }
 
 function conversionRomana(numRomano) {
