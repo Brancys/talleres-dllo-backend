@@ -13,16 +13,15 @@ function desglosarString(cadena,param) {
   return cad.length - numVocal
 }
 
-function twoSum(array,n) {  //la funcion retorna una lista de listas, donde cada sublista es el par de indices que suman n
+function twoSum(array,n) {  //la funcion retorna solo el primer par de índices de numeros que sumados den n
   ans = []
   for (let i = 0; i < array.length; i++) {
     for (let j = i + 1; j < array.length; j++) {     
       if (array[i]+array[j] === n && array[i] != array[j]) {
-        ans.push([i,j])        
+        return [i,j]        
       }
     }    
-  }
-  return ans
+  }  
 }
 
 function conversionRomana(numRomano) {
