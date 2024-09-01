@@ -1,5 +1,5 @@
 function desglosarString(cadena,param) {
-  cad = cadena.replace(/\s+/g, "").split('')
+  cad = cadena.replace(/\s+/g,"")
   vocal = ['a','e','i','o','u']
   numVocal = 0
   for (let i = 0; i < cad.length; i++) {
@@ -25,4 +25,16 @@ function twoSum(array,n) {  //la funcion retorna una lista de listas, donde cada
   return ans
 }
 
-console.log(twoSum([1,2,3,4,5,6,7,8,9],9));
+function conversionRomana(numRomano) {
+  let romanos = ['I', 'V', 'X', 'L', 'C', 'D', 'M'];
+  let numeros = [1, 5, 10, 50, 100, 500, 1000];
+  let num = 0;
+  for (let i = 0; i < numRomano.length; i++) {
+    if (i < numRomano.length - 1 && numeros[romanos.indexOf(numRomano[i])] < numeros[romanos.indexOf(numRomano[i + 1])]) {
+      num -= numeros[romanos.indexOf(numRomano[i])];
+    } else {
+      num += numeros[romanos.indexOf(numRomano[i])];
+    }
+  }
+  return num;
+}
