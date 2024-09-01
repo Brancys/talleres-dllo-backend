@@ -1,16 +1,13 @@
 function desglosarString(cadena,param) {
-  cad = cadena.replace(/\s+/g,"")
-  vocal = ['a','e','i','o','u']
-  numVocal = 0
-  for (let i = 0; i < cad.length; i++) {
-    if (vocal.includes(cad[i])) {
-      numVocal++
-    }    
-  }
-  if (param === 'vocales') {
-    return numVocal
-  }  
-  return cad.length - numVocal
+  cad = cadena.replace(/\s+/g,"").split('')
+  if(param === 'vocales'){
+    return cad.filter(esVocal).length
+  } 
+  return cad.length - cad.filter(esVocal).length
+}
+
+function esVocal(item) {
+  return ['a','e','i','o','u'].includes(item)  
 }
 
 function twoSum(array,n) {  //la funcion retorna solo el primer par de índices de numeros que sumados den n
