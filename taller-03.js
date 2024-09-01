@@ -13,4 +13,16 @@ function desglosarString(cadena,param) {
   return cad.length - numVocal
 }
 
-console.log(desglosarString('cadena','vocales'));
+function twoSum(array,n) {  //la funcion retorna una lista de listas, donde cada sublista es el par de indices que suman n
+  ans = []
+  for (let i = 0; i < array.length; i++) {
+    for (let j = i + 1; j < array.length; j++) {     
+      if (array[i]+array[j] === n && array[i] != array[j]) {
+        ans.push([i,j])        
+      }
+    }    
+  }
+  return ans
+}
+
+console.log(twoSum([1,2,3,4,5,6,7,8,9],9));
