@@ -110,9 +110,8 @@ userRoutes.get("/by-faction", async (request: Request, response: Response) => {
 
 //Punto 5
 userRoutes.post("/", async (request: Request, response: Response) => {
-  const newUser = request.body;  // Obtenemos el nuevo usuario del cuerpo de la solicitud
+  const newUser = request.body;  
 
-  // Validamos que se envíen los campos necesarios, incluyendo el id
   if (!newUser.id || !newUser.name || !newUser.hobbies || !newUser.years || !newUser.team || !newUser.faction) {
     return response.status(400).json({
       message: "Please provide all required fields (id, name, hobbies, years, team, faction).",
@@ -120,7 +119,7 @@ userRoutes.post("/", async (request: Request, response: Response) => {
   }
 
   try {
-    const result = await addUser(newUser);  // Llamamos a la función para agregar el nuevo usuario
+    const result = await addUser(newUser);
     if (result === "exists") {
       return response.status(409).json({
         message: `User with ID ${newUser.id} already exists.`,
