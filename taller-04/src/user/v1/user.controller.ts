@@ -42,14 +42,15 @@ async function getUsersByFaction(factionName: string): Promise<any[]> {
   return usersByFaction;
 }
 
-async function addUser(newUser: any): Promise<void> {
-  const users = usersData;  // Cargamos los usuarios actuales
-  const newId = users.length > 0 ? users[users.length - 1].id + 1 : 1;  // Generamos un nuevo ID
-  newUser.id = newId;  // Asignamos el nuevo ID al usuario
+async function addUser(newUser: any): Promise<string | void> {
+  const users = usersData;  // Cargamos datos del JSON
 
-  users.push(newUser);  // Agregamos el nuevo usuario al array de usuarios
+  const userExists = users.some(user => user.id === newUser.id);
+  if (userExists) {
+    return "exists";    }
 
-  // Escribimos el nuevo contenido en el archivo JSON
+  users.push(newUser);
+
   await writeFileAsync("./src/data/23-taller-04-datos.json", JSON.stringify(users, null, 2));
 }
 

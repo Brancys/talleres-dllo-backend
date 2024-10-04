@@ -28,14 +28,6 @@ async function GetUsersByHobby(request: Request, response: Response) {
 }
 
 // DECLARE ENDPOINTS
-userRoutes.get("/list-of-users", (request: Request, response: Response) => { // Endpoint para ver los usuarios
-  // Devolver el contenido actual del array users
-  return response.status(200).json({
-    message: "List of users",
-    //users
-  });
-});
-
 //Punto 1
 userRoutes.get("/hobby", GetUsersByHobby);
 
@@ -120,19 +112,25 @@ userRoutes.get("/by-faction", async (request: Request, response: Response) => {
 userRoutes.post("/", async (request: Request, response: Response) => {
   const newUser = request.body;  // Obtenemos el nuevo usuario del cuerpo de la solicitud
 
-  // Validamos que se envíen los campos necesarios
-  if (!newUser.name || !newUser.hobbies || !newUser.years || !newUser.team || !newUser.faction) {
+  // Validamos que se envíen los campos necesarios, incluyendo el id
+  if (!newUser.id || !newUser.name || !newUser.hobbies || !newUser.years || !newUser.team || !newUser.faction) {
     return response.status(400).json({
-      message: "Please provide all required fields (name, hobbies, years, team, faction).",
+      message: "Please provide all required fields (id, name, hobbies, years, team, faction).",
     });
   }
 
   try {
-    await addUser(newUser);  // Llamamos a la función que agrega el nuevo usuario
-    return response.status(201).json({
-      message: "User successfully added.",
-      user: newUser,
-    });
+    const result = await addUser(newUser);  // Llamamos a la función para agregar el nuevo usuario
+    if (result === "exists") {
+      return response.status(409).json({
+        message: `User with ID ${newUser.id} already exists.`,
+      });
+    } else {
+      return response.status(201).json({
+        message: "User successfully added.",
+        user: newUser,
+      });
+    }
   } catch (error) {
     response.status(500).json({
       message: "Error adding new user.",
@@ -140,7 +138,6 @@ userRoutes.post("/", async (request: Request, response: Response) => {
     });
   }
 });
-
 
 
 // EXPORT ROUTES
