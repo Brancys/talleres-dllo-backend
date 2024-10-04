@@ -1,6 +1,7 @@
 import usersData from "../../data/23-taller-04-datos.json"; // Importamos los datos del JSON directamente
+import * as fs from "fs";
+import { promisify } from "util";
 
-// Definir el nuevo tipo que coincide con los datos del JSON
 type JsonUserType = {
   id: number;
   name: string;
@@ -9,6 +10,8 @@ type JsonUserType = {
   team: string;
   faction: string;
 };
+
+const writeFileAsync = promisify(fs.writeFile);
 
 // DECLARE CONTROLLER FUNCTIONS
 async function readUsersByHobby(hobby: string): Promise<JsonUserType[]> {
@@ -39,5 +42,16 @@ async function getUsersByFaction(factionName: string): Promise<any[]> {
   return usersByFaction;
 }
 
+async function addUser(newUser: any): Promise<void> {
+  const users = usersData;  // Cargamos los usuarios actuales
+  const newId = users.length > 0 ? users[users.length - 1].id + 1 : 1;  // Generamos un nuevo ID
+  newUser.id = newId;  // Asignamos el nuevo ID al usuario
+
+  users.push(newUser);  // Agregamos el nuevo usuario al array de usuarios
+
+  // Escribimos el nuevo contenido en el archivo JSON
+  await writeFileAsync("./src/data/23-taller-04-datos.json", JSON.stringify(users, null, 2));
+}
+
 // EXPORT CONTROLLER FUNCTIONS
-export { readUsersByHobby, checkUserExists, getTeamExperience,getUsersByFaction  };
+export { readUsersByHobby, checkUserExists, getTeamExperience,getUsersByFaction, addUser };

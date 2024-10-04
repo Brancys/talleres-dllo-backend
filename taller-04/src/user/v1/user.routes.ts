@@ -1,12 +1,7 @@
 import { Router, Request, Response } from "express";
-import { readUsersByHobby, checkUserExists, getTeamExperience, getUsersByFaction } from "./user.controller";  
+import { readUsersByHobby, checkUserExists, getTeamExperience, getUsersByFaction, addUser } from "./user.controller";  
 
 const userRoutes = Router();
-
-// INITIALIZE USERS ARRAY
-let users = [
-  { id: 1, name: "Robin Restrepo", carrera: "Psicología" }
-];
 
 // DECLARE ENDPOINT FUNCTIONS
 async function GetUsersByHobby(request: Request, response: Response) {
@@ -33,11 +28,11 @@ async function GetUsersByHobby(request: Request, response: Response) {
 }
 
 // DECLARE ENDPOINTS
-userRoutes.get("/", (request: Request, response: Response) => { // Endpoint para ver los usuarios
+userRoutes.get("/list-of-users", (request: Request, response: Response) => { // Endpoint para ver los usuarios
   // Devolver el contenido actual del array users
   return response.status(200).json({
     message: "List of users",
-    users
+    //users
   });
 });
 
@@ -122,29 +117,30 @@ userRoutes.get("/by-faction", async (request: Request, response: Response) => {
 });
 
 //Punto 5
-userRoutes.post("/", (request: Request, response: Response) => {
-  const { id, name, carrera } = request.body;
+userRoutes.post("/", async (request: Request, response: Response) => {
+  const newUser = request.body;  // Obtenemos el nuevo usuario del cuerpo de la solicitud
 
-  if (!id || !name || !carrera) {
+  // Validamos que se envíen los campos necesarios
+  if (!newUser.name || !newUser.hobbies || !newUser.years || !newUser.team || !newUser.faction) {
     return response.status(400).json({
-      message: "Please provide id, name, and carrera."
+      message: "Please provide all required fields (name, hobbies, years, team, faction).",
     });
   }
-  const existingUser = users.find(user => user.id === id);
-  if (existingUser) {
-    return response.status(400).json({
-      message: "User with this ID already exists."
+
+  try {
+    await addUser(newUser);  // Llamamos a la función que agrega el nuevo usuario
+    return response.status(201).json({
+      message: "User successfully added.",
+      user: newUser,
+    });
+  } catch (error) {
+    response.status(500).json({
+      message: "Error adding new user.",
+      error: (error as Error).message,
     });
   }
-  
-  const newUser = { id, name, carrera };
-  users.push(newUser);
-
-  return response.status(201).json({
-    message: "User added successfully.",
-    user: newUser
-  });
 });
+
 
 
 // EXPORT ROUTES
